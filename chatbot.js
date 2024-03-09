@@ -6,7 +6,10 @@
 async function chatBot() {
 
   client.on('message', async msg => {
-    if (msg.body === 'Teste' || msg.body === 'teste') {
+  const lowerCaseBody = msg.body.toLowerCase();
+
+ 
+    if (lowerCaseBody === 'teste' || lowerCaseBody === 'oi') {
       await delay(2000);
       await sendMessage(msg.from, 'Olá, este é um robô inteligente!');
       await delay(3000);
@@ -79,7 +82,11 @@ const puppeteerOptions = {
   args: ['--no-sandbox'], // Necessário para Chrome
 };
 
-const client = new Client({ puppeteer, ...puppeteerOptions });
+const client = new Client({
+  puppeteer: {
+    executablePath: '/usr/bin/google-chrome-stable',
+  }
+});
 
 // Leitura do qrcode
 client.on('qr', qr => {
