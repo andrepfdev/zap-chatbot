@@ -16,7 +16,9 @@ async function chatBot() {
       await sendMessage(msg.from, 'Vou enviar uma imagem e um áudio para explicar melhor.');
       await delay(5000);
       await sendFile(msg.from, './imagem.png');
-      await sendFile(msg.from, './audio.ogg', 'audio'); // Specify audio type
+      await sendFile(msg.from, './audio.ogg', 'audio');
+      
+      //await sendFile(msg.from, './video1.m4v', 'video');
 
       await delay(8000);
 
