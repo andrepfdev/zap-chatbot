@@ -6,9 +6,8 @@
 async function chatBot() {
 
   client.on('message', async msg => {
-  const lowerCaseBody = msg.body.toLowerCase();
+    const lowerCaseBody = msg.body.toLowerCase();
 
- 
     if (lowerCaseBody === 'teste' || lowerCaseBody === 'oi') {
       await delay(2000);
       await sendMessage(msg.from, 'Olá, este é um robô inteligente!');
@@ -17,7 +16,7 @@ async function chatBot() {
       await delay(5000);
       await sendFile(msg.from, './imagem.png');
       await sendFile(msg.from, './audio.ogg', 'audio');
-      
+
       //await sendFile(msg.from, './video1.m4v', 'video');
 
       await delay(8000);
@@ -40,55 +39,17 @@ async function chatBot() {
 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////
 // ** Config do Chabot **
 //////////////////////////////////////////////////////
 
 const qrcode = require('qrcode-terminal');
 const { Client, Buttons, List, MessageMedia } = require('whatsapp-web.js');
-const puppeteer = require('puppeteer');
+// A dependência do puppeteer foi removida (não é necessária no Windows)
+// const puppeteer = require('puppeteer');
 
-// Opções para execução no Ubuntu
-const puppeteerOptions = {
-  headless: true,
-  args: ['--no-sandbox'], // Necessário para Chrome
-};
-
-const client = new Client({
-  puppeteer: {
-    executablePath: '/usr/bin/google-chrome-stable',
-  }
-});
+// Opções não necessárias no Windows, substituídas pelo comportamento padrão
+const client = new Client();
 
 // Leitura do qrcode
 client.on('qr', qr => {
@@ -99,10 +60,10 @@ client.on('ready', () => {
   console.log('>>>> WhatsApp conectado. Modo: ativo');
 });
 
-// Delay function
+// Função de atraso
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-// ... rest of your code using client object ...
+// ... resto do seu código usando o objeto client ...
 
 client.initialize();
 chatBot();
@@ -112,27 +73,26 @@ chatBot();
 // ** Funções do Chabot **
 //////////////////////////////////////////////////////
 
-// Function to send messages (improved with message object)
+// Função para enviar mensagens (melhorada com objeto de mensagem)
 async function sendMessage(to, message) {
   const chat = await getChatById(to);
   await chat.sendStateTyping();
   await delay(1000);
-  return await chat.sendMessage(message); // Use the sendMessage method directly
+  return await chat.sendMessage(message); // Use o método sendMessage diretamente
 }
 
-// Function to send files
+// Função para enviar arquivos
 async function sendFile(to, filePath, type = 'image') {
   const chat = await getChatById(to);
   const media = MessageMedia.fromFilePath(filePath, type);
   await chat.sendStateRecording();
   await delay(2000);
-  return await chat.sendMessage(media); // Use the sendMessage method directly
+  return await chat.sendMessage(media); // Use o método sendMessage diretamente
 }
 
-// Function to retrieve chat by ID
+// Função para recuperar o chat por ID
 async function getChatById(id) {
-  const chat = await client.getChatById(id); // Use the built-in client method
+  const chat = await client.getChatById(id); // Use o método built-in do client
   return chat;
 }
-
 
