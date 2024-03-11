@@ -75,3 +75,29 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 client.initialize();
 chatBot();
 
+//////////////////////////////////////////////////////
+// ** Funções do Chabot **
+//////////////////////////////////////////////////////
+
+// Função para enviar mensagens (melhorada com objeto de mensagem)
+async function sendMessage(to, message) {
+    const chat = await getChatById(to);
+    await chat.sendStateTyping();
+    await delay(1000);
+    return await chat.sendMessage(message); // Use o método sendMessage diretamente
+}
+
+// Função para enviar arquivos
+async function sendFile(to, filePath, type = 'image') {
+    const chat = await getChatById(to);
+    const media = MessageMedia.fromFilePath(filePath, type);
+    await chat.sendStateRecording();
+    await delay(2000);
+    return await chat.sendMessage(media); // Use o método sendMessage diretamente
+}
+
+// Função para recuperar o chat por ID
+async function getChatById(id) {
+    const chat = await client.getChatById(id); // Use o método built-in do client
+    return chat;
+}
